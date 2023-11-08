@@ -1,5 +1,8 @@
 const express = require("express");
+const fs = require("fs");
+const path = require("path");
 const app = express();
+const routes = require("./src/routes/api.js");
 
 // Security Middlewares
 const cors = require("cors");
@@ -18,9 +21,6 @@ app.use(cors());
 app.use(mongoSanitize());
 app.use(helmet());
 app.use(hpp());
-app.use("*", (req, res) => {
-  res.send("Please use proper route");
-});
 
 // rate-limit;
 const limiter = rateLimit({
@@ -28,5 +28,16 @@ const limiter = rateLimit({
   limit: 60,
 });
 app.use(limiter);
+
+const morgan = require("morgan");
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), { flags: "a" });
+app.use(morgan("dev", { stream: accessLogStream }));
+
+// routes
+app.use("/api/v1", routes);
+app.use("*", (req, res) => {
+  res.send("Please use proper route");
+});
 
 module.exports = app;
