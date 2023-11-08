@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema, Model } = mongoose;
+const { Schema, model } = mongoose;
 
 const cartSchema = new Schema(
   {
@@ -9,5 +9,5 @@ const cartSchema = new Schema(
   { timestamps: true, versionKey: false }
 );
 
-const cartModel = Model("Cart", cartSchema);
+const cartModel = model("Cart", cartSchema);
 module.exports = cartModel;
