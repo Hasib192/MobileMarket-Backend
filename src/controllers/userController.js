@@ -7,7 +7,7 @@ exports.register = async (req, res) => {
     let { name, email, password } = reqBody;
     let existUser = await userModel.findOne({ email });
     if (existUser) {
-      res.status(200).json({ status: "failed", data: "User already exist" });
+      res.status(200).json({ status: "matched", data: "User already exist" });
     } else {
       let result = await userModel.create({ name, email, password });
       res.status(200).json({ status: "success", data: result });
@@ -21,7 +21,7 @@ exports.login = async (req, res) => {
   let reqBody = req.body;
   try {
     let { email, password } = reqBody;
-    pipeline = [{ $match: { email, password } }, { $project: { _id: 1, email: 1 } }];
+    pipeline = [{ $match: { email, password } }, { $project: { _id: 1, name: 1, email: 1 } }];
     let result = await userModel.aggregate(pipeline);
     console.log(result);
     if (result.length > 0) {

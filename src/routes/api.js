@@ -5,7 +5,7 @@ const productController = require("../controllers/productController");
 
 // User Api
 router.post("/register", userController.register);
-router.get("/login", userController.login);
+router.post("/login", userController.login);
 
 // Product Api
 router.post("/product/create", productController.createProduct);
