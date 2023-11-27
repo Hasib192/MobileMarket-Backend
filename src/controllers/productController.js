@@ -15,3 +15,18 @@ exports.createProduct = async (req, res) => {
     });
   }
 };
+
+exports.listProduct = async (req, res) => {
+  try {
+    let result = await productModel.find({});
+    res.status(200).json({
+      status: "success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(200).json({
+      status: "failed",
+      data: error.message,
+    });
+  }
+};

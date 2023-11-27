@@ -9,5 +9,6 @@ router.post("/login", userController.login);
 
 // Product Api
 router.post("/product/create", productController.createProduct);
+router.get("/product/list", productController.listProduct);
 
 module.exports = router;
