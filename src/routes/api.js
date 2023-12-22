@@ -2,13 +2,21 @@ const router = require("express").Router();
 
 const userController = require("../controllers/userController");
 const productController = require("../controllers/productController");
+const cartController = require("../controllers/cartController");
 
-// User Api
+const { verifyToken } = require("../helpers/jwt");
+
+//! User Api
 router.post("/register", userController.register);
 router.post("/login", userController.login);
 
-// Product Api
+//! Product Api
 router.post("/product/create", productController.createProduct);
-router.get("/product/list", productController.listProduct);
+router.get("/product/list", productController.productList);
+
+//! Cart Api
+router.post("/cart/add", verifyToken, cartController.createCart);
+router.get("/cart/list", verifyToken, cartController.cartList);
+router.post("/cart/remove/:id", verifyToken, cartController.removeCart);
 
 module.exports = router;

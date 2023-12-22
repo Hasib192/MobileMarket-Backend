@@ -16,7 +16,7 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-exports.listProduct = async (req, res) => {
+exports.productList = async (req, res) => {
   try {
     let result = await productModel.find({});
     res.status(200).json({
