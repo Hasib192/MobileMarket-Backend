@@ -4,9 +4,9 @@ const mongoose = require("mongoose");
 exports.createCart = async (req, res) => {
   try {
     let userId = req.user._id;
-    let { products } = req.body;
+    let { product } = req.body;
 
-    let result = await cartModel.create({ user: userId, products });
+    let result = await cartModel.create({ user: userId, product });
 
     if (result) {
       res.status(200).json({ status: true, data: result });
