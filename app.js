@@ -28,6 +28,7 @@ const limiter = rateLimit({
   limit: 60,
 });
 app.use(limiter);
+app.set("trust proxy", 1);
 
 const morgan = require("morgan");
 
