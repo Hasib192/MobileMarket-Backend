@@ -1,12 +1,15 @@
 const cartModel = require("../models/cartModel");
 const mongoose = require("mongoose");
 
-exports.createCart = async (req, res) => {
+exports.addToCart = async (req, res) => {
   try {
-    let userId = req.user._id;
-    let { product } = req.body;
+    const user = req.user._id;
+    const { product, unit } = req.body;
 
-    let result = await cartModel.create({ user: userId, product });
+    const filter = { user, product };
+    const update = { unit };
+
+    const result = await cartModel.findOneAndUpdate(filter, update, { new: true, upsert: true });
 
     if (result) {
       res.status(200).json({ status: true, data: result });
@@ -18,36 +21,21 @@ exports.createCart = async (req, res) => {
 
 exports.cartList = async (req, res) => {
   try {
-    let userId = new mongoose.Types.ObjectId(req.user._id);
+    const user = new mongoose.Types.ObjectId(req.user._id);
 
-    let result = await cartModel.aggregate([
-      { $match: { user: userId } },
-      {
-        $lookup: {
-          from: "products",
-          localField: "products",
-          foreignField: "_id",
-          as: "selected_products",
-        },
-      },
-      {
-        $project: {
-          selected_products: 1,
-        },
-      },
-    ]);
+    const result = await cartModel.find({ user }).populate("product", "title price image discount_price -_id").select("unit");
+
     res.status(200).json({ status: true, data: result });
   } catch (error) {
     res.status(200).json({ status: false, data: error.message });
   }
 };
 
-exports.removeCart = async (req, res) => {
+exports.removeCartItem = async (req, res) => {
   try {
-    let id = req.params.id;
+    const id = req.params.id;
 
-    let result = await cartModel.findByIdAndDelete(id);
-    console.log(result);
+    const result = await cartModel.findByIdAndDelete(id);
 
     if (result) {
       res.status(200).json({ status: true, data: result });

@@ -15,8 +15,8 @@ router.post("/product/create", productController.createProduct);
 router.get("/product/list", productController.productList);
 
 //! Cart Api
-router.post("/cart/add", verifyToken, cartController.createCart);
+router.post("/cart/add", verifyToken, cartController.addToCart);
 router.get("/cart/list", verifyToken, cartController.cartList);
-router.post("/cart/remove/:id", verifyToken, cartController.removeCart);
+router.get("/cart/remove/:id", verifyToken, cartController.removeCartItem);
 
 module.exports = router;
